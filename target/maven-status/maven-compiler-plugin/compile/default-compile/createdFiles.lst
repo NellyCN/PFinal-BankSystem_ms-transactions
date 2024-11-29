@@ -1,7 +1,0 @@
-com\xyzbank\mstransactions\mstransactions\service\impl\TransactionServiceImpl.class
-com\xyzbank\mstransactions\mstransactions\service\TransactionService.class
-com\xyzbank\mstransactions\mstransactions\model\Transaction$TransactionBuilder.class
-com\xyzbank\mstransactions\mstransactions\MsTransactionsApplication.class
-com\xyzbank\mstransactions\mstransactions\model\Transaction.class
-com\xyzbank\mstransactions\mstransactions\controller\TransactionController.class
-com\xyzbank\mstransactions\mstransactions\repository\TransactionRepository.class
