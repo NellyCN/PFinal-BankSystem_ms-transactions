@@ -1,0 +1,82 @@
+*****************************************************
+	   Base de Datos MongoDB: BankXYZdb	
+*****************************************************
+Collection:	Transactions
+
+Métodos HTTP:
+-----------
+
+GET	http://localhost:8081/transactions/history
+
+[
+    {
+        "id": "674a53dd6679664d25d01e10",
+        "type": "Deposit",
+        "amount": 1000.0,
+        "date": "2024-11-15T21:42:00",
+        "sourceAccount": null,
+        "destinationAccount": "12345678"
+    },
+    {
+        "id": "674a53dd6679664d25d01e11",
+        "type": "Withdrawal",
+        "amount": 500.0,
+        "date": "2024-11-15T21:43:00",
+        "sourceAccount": null,
+        "destinationAccount": "12345678"
+    },
+    {
+        "id": "674a53dd6679664d25d01e12",
+        "type": "Transfer",
+        "amount": 200.0,
+        "date": "2024-11-15T21:44:00",
+        "sourceAccount": "12345678",
+        "destinationAccount": "87654321"
+    },
+    {
+        "id": "674a53dd6679664d25d01e13",
+        "type": "Deposit",
+        "amount": 300.0,
+        "date": "2024-11-15T21:46:00",
+        "sourceAccount": null,
+        "destinationAccount": "87654321"
+    },
+    {
+        "id": "674a53dd6679664d25d01e14",
+        "type": "Withdrawal",
+        "amount": 100.0,
+        "date": "2024-11-15T21:50:00",
+        "sourceAccount": null,
+        "destinationAccount": "87654321"
+    }
+]
+
+POST:	http://localhost:8081/transactions/deposit
+
+{
+	"type": "deposit",
+	"amount": 80.00,
+	"date": "2024-11-15T21:43:00",
+	"sourceAccount": null,
+	"destinationAccount": "12345678"
+}
+
+POST	http://localhost:8081/transactions/withdrawal
+
+    {
+        "type": "Retiro",
+        "amount": 150.0,
+        "sourceAccount": "12345600",
+        "destinationAccount": null
+    }
+
+POST	http://localhost:8081/transactions/transfer
+
+    {
+        "type": "Transferencia",
+        "amount": 50.0,
+        "sourceAccount": "12345678",
+        "destinationAccount": "12345600"
+    }
+	
+	
