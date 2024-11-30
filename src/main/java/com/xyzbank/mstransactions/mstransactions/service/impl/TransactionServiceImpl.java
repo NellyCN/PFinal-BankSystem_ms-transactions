@@ -3,7 +3,7 @@ package com.xyzbank.mstransactions.mstransactions.service.impl;
 import com.xyzbank.mstransactions.mstransactions.model.Transaction;
 import com.xyzbank.mstransactions.mstransactions.repository.TransactionRepository;
 import com.xyzbank.mstransactions.mstransactions.service.TransactionService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -12,11 +12,12 @@ import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
 
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 @Service
 public class TransactionServiceImpl implements TransactionService {
 
     // Implementación de métodos
+//    @Autowired
     private final TransactionRepository transactionRepository;
 
     @Override
@@ -46,7 +47,7 @@ public class TransactionServiceImpl implements TransactionService {
             return Mono.error(new ResponseStatusException(HttpStatus.BAD_REQUEST, "Saldo insuficiente"));
         }
 
-// Crear la transacción de retiro.
+    // Crear la transacción de retiro.
         transaction.setType("Withdrawal");
         transaction.setDate(LocalDateTime.now());
 
@@ -71,6 +72,12 @@ public class TransactionServiceImpl implements TransactionService {
         transaction.setDate(LocalDateTime.now());
 
         return transactionRepository.save(transaction);
+    }
+
+    // Constructor para inyectar el repositorio
+    @Autowired
+    public TransactionServiceImpl(TransactionRepository transactionRepository) {
+        this.transactionRepository = transactionRepository;
     }
 
     @Override
