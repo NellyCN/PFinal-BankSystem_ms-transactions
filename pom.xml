@@ -46,12 +46,13 @@
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
+		<!-- Pruebas Unitarias Reactivas -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<!-- Reactor Test (para probar WebFlux) -->
+		<!-- Reactor Test (para probar WebFlux - Pruebas Reactivas) -->
 		<dependency>
 			<groupId>io.projectreactor</groupId>
 			<artifactId>reactor-test</artifactId>
@@ -93,6 +94,15 @@
 					</excludes>
 				</configuration>
 			</plugin>
+			<!-- Para evitar la advertencia Java HotSpot(TM)-->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<argLine>-XX:+UseSerialGC</argLine>
+				</configuration>
+			</plugin>
+
 			<!-- Checkstyle-->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -147,9 +157,9 @@
 					</rules>
 					<excludes>
 						<!-- Excluir paquete completo -->
-						<exclude>com/demo/example/ms-customer/service/controller/*</exclude>
+<!--						<exclude>com/xyzbank/mstransactions/mstransactions/service/controller/*</exclude>-->
 						<!-- Excluir una clase específica -->
-						<exclude>com/demo/example/ms-customer/MsCustomerApplication.class</exclude>
+<!--						<exclude>com/xyzbank/mstransactions/mstransactions/MsTransactionsApplication.class</exclude>-->
 					</excludes>
 				</configuration>
 			</plugin>

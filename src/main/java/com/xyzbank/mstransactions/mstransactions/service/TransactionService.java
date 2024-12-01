@@ -6,7 +6,8 @@ import reactor.core.publisher.Mono;
 
 public interface TransactionService {
 
-    Flux<Transaction> getAllTransactions();  // Consultar historial de transacciones.
+    Flux<Transaction> getAllTransactionsAccount(String accountId);  // Consultar historial de transacciones.
+    Flux<Transaction> getAllTransactions();
     Mono<Transaction> deposit(Transaction transaction); // Realizar depósito.
     Mono<Transaction> withdrawal(Transaction transaction); // Realizar retiro.
     Mono<Transaction> transfer(Transaction transaction); // Realizar transferencia.

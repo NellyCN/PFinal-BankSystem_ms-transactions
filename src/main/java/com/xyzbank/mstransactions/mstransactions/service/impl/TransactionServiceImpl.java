@@ -3,80 +3,85 @@ package com.xyzbank.mstransactions.mstransactions.service.impl;
 import com.xyzbank.mstransactions.mstransactions.model.Transaction;
 import com.xyzbank.mstransactions.mstransactions.repository.TransactionRepository;
 import com.xyzbank.mstransactions.mstransactions.service.TransactionService;
-
-import org.springframework.http.HttpStatus;
+import com.xyzbank.mstransactions.mstransactions.exception.CustomException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
-
+import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
 import java.time.LocalDateTime;
 
 @Service
 public class TransactionServiceImpl implements TransactionService {
 
-    // Implementación de métodos
     private final TransactionRepository transactionRepository;
+    private final WebClient webClient;
 
-    // Constructor para inyectar el repositorio
-    public TransactionServiceImpl(TransactionRepository transactionRepository) {
+    public TransactionServiceImpl(TransactionRepository transactionRepository, WebClient webClient) {
         this.transactionRepository = transactionRepository;
+        this.webClient = webClient;
     }
 
-    // DEPÓSITOS
+
+    private Mono<Double> getAccountBalance(String accountId) {
+        return webClient.get()
+                .uri("/accounts/{id}/balance", accountId)
+                .retrieve()
+                .bodyToMono(Double.class)
+                .onErrorResume(e -> Mono.error(new CustomException("Error al obtener el saldo de la cuenta")));
+    }
+
+    // DEPOSITO
+
     @Override
     public Mono<Transaction> deposit(Transaction transaction) {
-        // Validar que el monto sea positivo.
-        if (transaction.getAmount() <= 0) {
-            return Mono.error(new ResponseStatusException(HttpStatus.BAD_REQUEST, "El monto debe ser positivo"));
-        }
-        // Crear la transacción de depósito.
-        transaction.setType("Deposit");
         transaction.setDate(LocalDateTime.now());
+        transaction.setType("DEPOSIT");
+        transaction.setStatus("COMPLETED");
         return transactionRepository.save(transaction);
     }
 
-    // RETIROS
+    // RETIRO
     @Override
     public Mono<Transaction> withdrawal(Transaction transaction) {
-        // Validar que el monto sea positivo.
-        if (transaction.getAmount() <= 0) {
-            return Mono.error(new ResponseStatusException(HttpStatus.BAD_REQUEST, "El monto debe ser positivo"));
-        }
-        // Simulo validación de saldo
-//        Double currentBalance = 1000.0; // Saldo fijo
-//        if (currentBalance < transaction.getAmount()) {
-//            return Mono.error(new ResponseStatusException(HttpStatus.BAD_REQUEST, "Saldo insuficiente"));
-//        }
-        // Crear la transacción de retiro.
-        transaction.setType("Withdrawal");
-        transaction.setDate(LocalDateTime.now());
-        return transactionRepository.save(transaction);
+        return getAccountBalance(transaction.getSourceAccount())
+                .flatMap(balance -> {
+                    if (balance >= transaction.getAmount()) {
+                        transaction.setDate(LocalDateTime.now());
+                        transaction.setType("WITHDRAWAL");
+                        transaction.setStatus("COMPLETED");
+                        return transactionRepository.save(transaction);
+                    } else {
+                        return Mono.error(new CustomException("Saldo insuficiente para el retiro"));
+                    }
+                });
     }
 
-    // TRANSFERENCIAS
+    // TRANSFERENCIA
     @Override
     public Mono<Transaction> transfer(Transaction transaction) {
-        // Valido datos requeridos.
-        if (transaction.getAmount() <= 0 || transaction.getDestinationAccount() == null) {
-            return Mono.error(new ResponseStatusException(HttpStatus.BAD_REQUEST, "Datos inválidos para la transferencia"));
-        }
-        // Simulo validación de saldo insuficiente.
-//        Double currentBalance = 1000.0; // Saldo Fijo
-//        if (currentBalance < transaction.getAmount()) {
-//            return Mono.error(new ResponseStatusException(HttpStatus.BAD_REQUEST, "Saldo insuficiente"));
-//        }
-        // Crear la transacción de transferencia.
-        transaction.setType("Transfer");
-        transaction.setDate(LocalDateTime.now());
-        return transactionRepository.save(transaction);
+        return getAccountBalance(transaction.getSourceAccount())
+                .flatMap(balance -> {
+                    if (balance >= transaction.getAmount()) {
+                        transaction.setDate(LocalDateTime.now());
+                        transaction.setType("TRANSFER");
+                        transaction.setStatus("COMPLETED");
+                        return transactionRepository.save(transaction);
+                    } else {
+                        return Mono.error(new CustomException("Saldo insuficiente para la transferencia"));
+                    }
+                });
     }
 
     // HISTORIAL DE TRANSACCIONES
     @Override
     public Flux<Transaction> getAllTransactions() {
-        return transactionRepository.findAll();
+        // Asegura que el repositorio nunca devuelva null.
+        return transactionRepository.findAll() != null ? transactionRepository.findAll() : Flux.empty();
+    }
+
+    @Override
+    public Flux<Transaction> getAllTransactionsAccount(String accountId) {
+        return transactionRepository.findBySourceAccount(accountId);
     }
 
 }

@@ -17,23 +17,25 @@ public class Transaction {
     @BsonId
     private String id;  // Este campo se mapeará al campo _id en MongoDB
 
-    private String type;
+    private String type; // Deposit, Withdrawal, Transfer
     private Double amount;
     private LocalDateTime date;
+    private String status; // Pendiente, Completado, Falló
     private String sourceAccount;
     private String destinationAccount;
 
     // Constructor por defecto
-    public Transaction() {
-    }
+//    public Transaction() {
+//    }
 
     // Constructor
-    public Transaction(String id, String type, Double amount, LocalDateTime date, String sourceAccount, String destinationAccount)
+    public Transaction(String id, String type, Double amount, LocalDateTime date, String status, String sourceAccount, String destinationAccount)
     {
         this.id = id;
         this.type = type;
         this.amount = amount;
         this.date = date;
+        this.status = status;
         this.sourceAccount = sourceAccount;
         this.destinationAccount = destinationAccount;
     }
