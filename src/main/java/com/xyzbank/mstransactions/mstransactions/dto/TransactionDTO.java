@@ -6,6 +6,8 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+//DTO para encapsular los datos de las transacciones expuestos al cliente.
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -14,5 +16,5 @@ public class TransactionDTO {
     private String type;
     private Double amount;
     private LocalDateTime date;
-    private String status; // Incluye solo los campos necesarios
+    private String status;
 }

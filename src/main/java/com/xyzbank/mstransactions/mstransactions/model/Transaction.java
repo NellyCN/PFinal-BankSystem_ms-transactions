@@ -6,7 +6,10 @@ import lombok.Setter;
 
 import org.bson.codecs.pojo.annotations.BsonId; //  identificador único (ID) pojo(representa un Doc MongoDB)
 import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.time.LocalDateTime;
+
+//Modelo de datos que representa una transacción almacenada en MongoDB.
 
 @Getter
 @Setter
@@ -24,15 +27,4 @@ public class Transaction {
     private String sourceAccount;
     private String destinationAccount;
 
-    // Constructor
-    public Transaction(String id, String type, Double amount, LocalDateTime date, String status, String sourceAccount, String destinationAccount)
-    {
-        this.id = id;
-        this.type = type;
-        this.amount = amount;
-        this.date = date;
-        this.status = status;
-        this.sourceAccount = sourceAccount;
-        this.destinationAccount = destinationAccount;
-    }
 }
