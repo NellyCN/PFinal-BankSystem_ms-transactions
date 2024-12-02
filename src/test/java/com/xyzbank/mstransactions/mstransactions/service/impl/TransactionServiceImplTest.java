@@ -1,6 +1,5 @@
 package com.xyzbank.mstransactions.mstransactions.service.impl;
 
-import com.xyzbank.mstransactions.mstransactions.exception.CustomException;
 import com.xyzbank.mstransactions.mstransactions.model.Transaction;
 import com.xyzbank.mstransactions.mstransactions.repository.TransactionRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,7 +36,7 @@ class TransactionServiceImplTest {
     @Test
     void testDeposit() {
         // Mock de transacción
-        Transaction transaction = new Transaction(null, "Deposit", 100.0, LocalDateTime.now(), null, "123", null);
+        Transaction transaction = new Transaction(null, "DEPOSIT", 100.0, LocalDateTime.now(), null, "123", null);
 
         // Mock del repositorio
         when(transactionRepository.save(transaction)).thenReturn(Mono.just(transaction));
@@ -50,43 +49,6 @@ class TransactionServiceImplTest {
 
         verify(transactionRepository, times(1)).save(transaction);
     }
-
-//    @Test
-//    void testWithdraw_InsufficientBalance() {
-//        // Mock de transacción
-//        Transaction transaction = new Transaction(null, "Withdrawal", 200.0, LocalDateTime.now(), null, "123", null);
-//
-//        // Mock de WebClient para saldo insuficiente
-//        when(webClient.get().uri("/accounts/{id}/balance", "123").retrieve().bodyToMono(Double.class))
-//                .thenReturn(Mono.just(100.0));
-//
-//        // Verificación del metodo withdraw con saldo insuficiente
-//        StepVerifier.create(transactionService.withdrawal(transaction))
-//                .expectError(CustomException.class)
-//                .verify();
-//
-//        verify(transactionRepository, never()).save(any());
-//    }
-//
-//    @Test
-//    void testTransfer_SufficientBalance() {
-//        // Mock de transacción
-//        Transaction transaction = new Transaction(null, "Transfer", 50.0, LocalDateTime.now(), null, "123", "456");
-//
-//        // Mock de WebClient para saldo suficiente
-//        when(webClient.get().uri("/accounts/{id}/balance", "123").retrieve().bodyToMono(Double.class))
-//                .thenReturn(Mono.just(100.0));
-//
-//        // Mock del repositorio
-//        when(transactionRepository.save(transaction)).thenReturn(Mono.just(transaction));
-//
-//        // Verificación del metodo transfer
-//        StepVerifier.create(transactionService.transfer(transaction))
-//                .expectNext(transaction)
-//                .verifyComplete();
-//
-//        verify(transactionRepository, times(1)).save(transaction);
-//    }
 
     //TEST HISTORIAL DE TRANSACCIONES
     @Test
@@ -109,8 +71,8 @@ class TransactionServiceImplTest {
     @Test
     void testGetTransactionHistory() {
         // Mock de transacciones
-        Transaction transaction1 = new Transaction("1", "DEPOSIT", 100.0, LocalDateTime.now(), "Completado", "123", null);
-        Transaction transaction2 = new Transaction("2", "WITHDRAWAL", 50.0, LocalDateTime.now(), "Completado", "123", null);
+        Transaction transaction1 = new Transaction("1", "DEPOSIT", 100.0, LocalDateTime.now(), "COMPLETED", "123", null);
+        Transaction transaction2 = new Transaction("2", "WITHDRAWAL", 50.0, LocalDateTime.now(), "COMPLETED", "123", null);
 
         // Mock del repositorio
         when(transactionRepository.findBySourceAccount("123")).thenReturn(Flux.fromIterable(Arrays.asList(transaction1, transaction2)));

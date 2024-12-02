@@ -3,77 +3,145 @@
 *****************************************************
 Collection:	Transactions
 
-Métodos HTTP:
------------
+Métodos HTTP  - Endpoints:
+-----------		---------
 
-GET	http://localhost:8081/transactions/history
+GET	http://localhost:8081/api/transactions/history
 
 [
     {
         "id": "674a53dd6679664d25d01e10",
-        "type": "Deposit",
+        "type": "DEPOSIT",
         "amount": 1000.0,
         "date": "2024-11-15T21:42:00",
+        "status": "COMPLETED",
         "sourceAccount": null,
         "destinationAccount": "12345678"
     },
     {
         "id": "674a53dd6679664d25d01e11",
-        "type": "Withdrawal",
+        "type": "WITHDRAWAL",
         "amount": 500.0,
         "date": "2024-11-15T21:43:00",
+        "status": "COMPLETED",
         "sourceAccount": null,
         "destinationAccount": "12345678"
     },
     {
         "id": "674a53dd6679664d25d01e12",
-        "type": "Transfer",
+        "type": "TRANSFER",
         "amount": 200.0,
         "date": "2024-11-15T21:44:00",
+        "status": "COMPLETED",
         "sourceAccount": "12345678",
         "destinationAccount": "87654321"
     },
     {
         "id": "674a53dd6679664d25d01e13",
-        "type": "Deposit",
+        "type": "DEPOSIT",
         "amount": 300.0,
         "date": "2024-11-15T21:46:00",
+        "status": "COMPLETED",
         "sourceAccount": null,
         "destinationAccount": "87654321"
     },
     {
         "id": "674a53dd6679664d25d01e14",
-        "type": "Withdrawal",
+        "type": "WITHDRAWAL",
         "amount": 100.0,
         "date": "2024-11-15T21:50:00",
+        "status": "COMPLETED",
         "sourceAccount": null,
         "destinationAccount": "87654321"
+    },
+    {
+        "id": "674a7f9d3c7c0f73e7690f85",
+        "type": "DEPOSIT",
+        "amount": 20.0,
+        "date": "2024-11-30T02:59:41.009",
+        "status": "COMPLETED",
+        "sourceAccount": null,
+        "destinationAccount": "12345678"
+    },
+    {
+        "id": "674a81c13c7c0f73e7690f86",
+        "type": "WITHDRAWAL",
+        "amount": 100.0,
+        "date": "2024-11-29T22:08:49.691",
+        "status": "COMPLETED",
+        "sourceAccount": "12345600",
+        "destinationAccount": null
+    },
+    {
+        "id": "674aa0237971fc5c2f459243",
+        "type": "DEPOSIT",
+        "amount": 200.0,
+        "date": "2024-11-30T00:18:27.052",
+        "status": "COMPLETED",
+        "sourceAccount": null,
+        "destinationAccount": "12345600"
+    },
+    {
+        "id": "674aa1137971fc5c2f459244",
+        "type": "TRANSFER",
+        "amount": 700.0,
+        "date": "2024-11-30T00:22:27.219",
+        "status": null,
+        "sourceAccount": "12345678",
+        "destinationAccount": "12345600"
+    },
+    {
+        "id": "674bd2f4b3046b66b9b78cec",
+        "type": "Deposit",
+        "amount": 10.0,
+        "date": "2024-11-30T22:07:32.824",
+        "status": "Completado",
+        "sourceAccount": null,
+        "destinationAccount": "12345600"
+    },
+    {
+        "id": "674cb7823336985c2a6b17c2",
+        "type": "DEPOSIT",
+        "amount": 200.0,
+        "date": "2024-12-01T14:22:42.249",
+        "status": "COMPLETED",
+        "sourceAccount": null,
+        "destinationAccount": "87654321"
+    },
+    {
+        "id": "674cb8b93336985c2a6b17c3",
+        "type": "DEPOSIT",
+        "amount": 200.0,
+        "date": "2024-12-01T14:27:53.024",
+        "status": "COMPLETED",
+        "sourceAccount": null,
+        "destinationAccount": "1000000000"
     }
 ]
 
-POST:	http://localhost:8081/transactions/deposit
+POST:	http://localhost:8081/api/transactions/deposit
 
 {
-	"type": "deposit",
-	"amount": 80.00,
-	"date": "2024-11-15T21:43:00",
+	"type": "DEPOSIT",
+	"amount": 200.00,
+	"date": "2024-12-01T13:43:00",
 	"sourceAccount": null,
-	"destinationAccount": "12345678"
+	"destinationAccount": "87654321"
 }
 
-POST	http://localhost:8081/transactions/withdrawal
+POST	http://localhost:8081/api/transactions/withdrawal
 
     {
-        "type": "Retiro",
+        "type": "WITHDRAWAL",
         "amount": 150.0,
         "sourceAccount": "12345600",
         "destinationAccount": null
     }
 
-POST	http://localhost:8081/transactions/transfer
+POST	http://localhost:8081/api/transactions/transfer
 
     {
-        "type": "Transferencia",
+        "type": "TRANSFER",
         "amount": 50.0,
         "sourceAccount": "12345678",
         "destinationAccount": "12345600"

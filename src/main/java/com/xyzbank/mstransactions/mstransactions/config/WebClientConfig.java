@@ -13,5 +13,4 @@ public class WebClientConfig {
                 .baseUrl("http://localhost:8085") // URL base para ms-accounts
                 .build();
     }
-
 }

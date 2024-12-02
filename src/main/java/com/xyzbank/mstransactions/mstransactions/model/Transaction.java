@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 public class Transaction {
 
     @BsonId
-    private String id;  // Este campo se mapeará al campo _id en MongoDB
+    private String id;  // Mapea al campo _id en MongoDB
 
     private String type; // Deposit, Withdrawal, Transfer
     private Double amount;
@@ -23,10 +23,6 @@ public class Transaction {
     private String status; // Pendiente, Completado, Falló
     private String sourceAccount;
     private String destinationAccount;
-
-    // Constructor por defecto
-//    public Transaction() {
-//    }
 
     // Constructor
     public Transaction(String id, String type, Double amount, LocalDateTime date, String status, String sourceAccount, String destinationAccount)

@@ -1,6 +1,7 @@
 package com.xyzbank.mstransactions.mstransactions.controller;
 
-import com.xyzbank.mstransactions.mstransactions.model.Transaction;
+import com.xyzbank.mstransactions.mstransactions.dto.TransactionDTO;
+import com.xyzbank.mstransactions.mstransactions.mapper.TransactionMapper;
 import com.xyzbank.mstransactions.mstransactions.service.TransactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,37 +21,37 @@ import reactor.core.publisher.Mono;
 public class TransactionController {
 
     private final TransactionService transactionService;
-
-//    @Autowired
-//    public TransactionController(TransactionService transactionService) {
-//        this.transactionService = transactionService;
-//    }
+    private final TransactionMapper transactionMapper;
 
     @PostMapping("/deposit")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Mono<Transaction> deposit(@RequestBody Transaction transaction) {
-        return transactionService.deposit(transaction);     //Dependency Injection (DI): TransactionService se inyecta en el controlador.
-
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public Mono<TransactionDTO> deposit(@RequestBody TransactionDTO transactionDTO) {
+        return transactionService.deposit(transactionMapper.toEntity(transactionDTO))     //Dependency Injection (DI): TransactionService se inyecta en el controlador.
+                .map(transactionMapper::toDTO);
     }
 
     @PostMapping("/withdrawal")
     @ResponseStatus(HttpStatus.CREATED)
-    public Mono<Transaction> withdrawal(@RequestBody Transaction transaction) {
-        return transactionService.withdrawal(transaction);
+    public Mono<TransactionDTO> withdrawal(@RequestBody TransactionDTO transactionDTO) {
+        return transactionService.withdrawal(transactionMapper.toEntity(transactionDTO))
+                .map(transactionMapper::toDTO);
     }
 
     @PostMapping("/transfer")
     @ResponseStatus(HttpStatus.CREATED)
-    public Mono<Transaction> transfer(@RequestBody Transaction transaction) {
-        return transactionService.transfer(transaction);
+    public Mono<TransactionDTO> transfer(@RequestBody TransactionDTO transactionDTO) {
+        return transactionService.transfer(transactionMapper.toEntity(transactionDTO))
+                .map(transactionMapper::toDTO);
     }
     @GetMapping("/history")
-    public Flux<Transaction> getAllTransactions() {
-        return transactionService.getAllTransactions(); // Llama al servicio para obtener todas las transacciones
+    public Flux<TransactionDTO> getAllTransactions() {
+        return transactionService.getAllTransactions()   // Llama al servicio para obtener todas las transacciones
+                .map(transactionMapper::toDTO);
     }
     @GetMapping("/history/{accountId}")
-    public Flux<Transaction> getAllTransactionsAccount(@PathVariable String accountId) {
-        return transactionService.getAllTransactionsAccount(accountId); // Llama al servicio para obtener todas las transacciones
+    public Flux<TransactionDTO> getAllTransactionsAccount(@PathVariable String accountId) {
+        return transactionService.getAllTransactionsAccount(accountId) // Llama al servicio para obtener todas las transacciones
+                .map(transactionMapper::toDTO);
     }
 
 }

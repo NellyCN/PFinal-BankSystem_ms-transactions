@@ -26,10 +26,15 @@
 		<tag/>
 		<url/>
 	</scm>
+
 	<properties>
 		<java.version>17</java.version>
+		<org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
+		<org.lombok-mapstruct-binding>0.2.0</org.lombok-mapstruct-binding>
 	</properties>
+
 	<dependencies>
+
 		<!-- Spring Data MongoDB Reactive -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -45,6 +50,7 @@
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
+			<scope>provided</scope>
 		</dependency>
 		<!-- Pruebas Unitarias Reactivas -->
 		<dependency>
@@ -78,6 +84,23 @@
 			<version>5.0.0</version>
 			<scope>test</scope>
 		</dependency>
+
+		<!-- Dependencia principal de MapStruct -->
+		<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct</artifactId>
+			<version>${org.mapstruct.version}</version>
+		</dependency>
+
+		<!-- Procesador de anotaciones de MapStruct -->
+		<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct-processor</artifactId>
+			<version>${org.mapstruct.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+
 	</dependencies>
 
 	<build>
@@ -92,14 +115,6 @@
 							<artifactId>lombok</artifactId>
 						</exclude>
 					</excludes>
-				</configuration>
-			</plugin>
-			<!-- Para evitar la advertencia Java HotSpot(TM)-->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<configuration>
-					<argLine>-XX:+UseSerialGC</argLine>
 				</configuration>
 			</plugin>
 
@@ -155,12 +170,6 @@
 							</limits>
 						</rule>
 					</rules>
-					<excludes>
-						<!-- Excluir paquete completo -->
-<!--						<exclude>com/xyzbank/mstransactions/mstransactions/service/controller/*</exclude>-->
-						<!-- Excluir una clase específica -->
-<!--						<exclude>com/xyzbank/mstransactions/mstransactions/MsTransactionsApplication.class</exclude>-->
-					</excludes>
 				</configuration>
 			</plugin>
 		</plugins>
