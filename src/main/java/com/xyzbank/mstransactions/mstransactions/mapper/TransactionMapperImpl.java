@@ -18,7 +18,9 @@ public class TransactionMapperImpl implements TransactionMapper {
                 transaction.getType(),
                 transaction.getAmount(),
                 transaction.getDate(),
-                transaction.getStatus()
+                transaction.getStatus(),
+                transaction.getSourceAccount(),
+                transaction.getDestinationAccount()
         );
     }
 
@@ -31,6 +33,8 @@ public class TransactionMapperImpl implements TransactionMapper {
                 .amount(transactionDTO.getAmount())
                 .date(transactionDTO.getDate())
                 .status(transactionDTO.getStatus())
+                .sourceAccount(transactionDTO.getSourceAccount())
+                .destinationAccount(transactionDTO.getDestinationAccount())
                 .build();
     }
 }

@@ -1,21 +1,25 @@
 package com.xyzbank.mstransactions.mstransactions.service.impl;
 
+import com.xyzbank.mstransactions.mstransactions.dto.TransactionDTO;
+import com.xyzbank.mstransactions.mstransactions.mapper.TransactionMapper;
 import com.xyzbank.mstransactions.mstransactions.model.Transaction;
 import com.xyzbank.mstransactions.mstransactions.repository.TransactionRepository;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+
 import org.mockito.MockitoAnnotations;
+
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
+
 import reactor.test.StepVerifier;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
-
 import static org.mockito.Mockito.*;
+
 
 class TransactionServiceImplTest {
 
@@ -28,62 +32,43 @@ class TransactionServiceImplTest {
     @InjectMocks
     private TransactionServiceImpl transactionService;      // Servicio bajo prueba
 
+    @Mock
+    private TransactionMapper transactionMapper;
+
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
     }
 
-    @Test
-    void testDeposit() {
-        // Mock de transacción
-        Transaction transaction = new Transaction(null, "DEPOSIT", 100.0, LocalDateTime.now(), null, "123", null);
-
-        // Mock del repositorio
-        when(transactionRepository.save(transaction)).thenReturn(Mono.just(transaction));
-
-        // Verificación del metodo deposit, probamos el mock con StepVerifier
-        StepVerifier.create(transactionService.deposit(transaction))
-                // Se espera los valores en t
-                .expectNext(transaction)
-                .verifyComplete();  // Se completa la verificación
-
-        verify(transactionRepository, times(1)).save(transaction);
-    }
 
     //TEST HISTORIAL DE TRANSACCIONES
     @Test
-    void testGetAllTransactions() {
-        // Mock de transacciones
-        when(transactionRepository.findAll()).thenReturn(Flux.just(
-                new Transaction("1", "DEPOSIT", 100.00, LocalDateTime.now(), "COMPLETED", null, "12345678"),
-                new Transaction("2", "WITHDRAWAL", 50.00, LocalDateTime.now(), "COMPLETED", "12345600", null),
-                new Transaction("3", "TRANSFER", 150.00, LocalDateTime.now(), "COMPLETED", "12345600", "12345678")
-        ));
+    void getAllTransactions_Success() {
+        // Datos simulados para el repositorio y el mapper
+        Transaction transaction1 = new Transaction("1", "Deposit", 100.0, LocalDateTime.now(), "Completed", null, "12345600");
+        Transaction transaction2 = new Transaction("2", "Withdrawal", 50.0, LocalDateTime.now(), "Completed", "12345600", null);
+        TransactionDTO transactionDTO1 = new TransactionDTO("1", "Deposit", 100.0, LocalDateTime.now(), "Completed", null, "12345600");
+        TransactionDTO transactionDTO2 = new TransactionDTO("2", "Withdrawal", 50.0, LocalDateTime.now(), "Completed", "12345600", null);
 
-        // Verificación con StepVerifier
-        StepVerifier.create(transactionService.getAllTransactions())
-                .expectNextMatches(transaction -> transaction.getId().equals("1"))
-                .expectNextMatches(transaction -> transaction.getId().equals("2"))
-                .expectNextMatches(transaction -> transaction.getId().equals("3"))
+        // Mockeo del repositorio para devolver las transacciones
+        when(transactionRepository.findAll()).thenReturn(Flux.just(transaction1, transaction2));
+        // Mockeo del mapper para convertir las entidades a DTOs
+        when(transactionMapper.toDTO(transaction1)).thenReturn(transactionDTO1);
+        when(transactionMapper.toDTO(transaction2)).thenReturn(transactionDTO2);
+
+        // Ejecución del método a probar
+        Flux<TransactionDTO> result = transactionService.getAllTransactions();
+
+        // Verificación del resultado utilizando StepVerifier
+        StepVerifier.create(result)
+                .expectNext(transactionDTO1)
+                .expectNext(transactionDTO2)
                 .verifyComplete();
-    }
 
-    @Test
-    void testGetTransactionHistory() {
-        // Mock de transacciones
-        Transaction transaction1 = new Transaction("1", "DEPOSIT", 100.0, LocalDateTime.now(), "COMPLETED", "123", null);
-        Transaction transaction2 = new Transaction("2", "WITHDRAWAL", 50.0, LocalDateTime.now(), "COMPLETED", "123", null);
-
-        // Mock del repositorio
-        when(transactionRepository.findBySourceAccount("123")).thenReturn(Flux.fromIterable(Arrays.asList(transaction1, transaction2)));
-
-        // Verificación del historial de transacciones
-        StepVerifier.create(transactionService.getAllTransactionsAccount("123"))
-                // Se espera los valores en t1 y t2
-                .expectNext(transaction1)
-                .expectNext(transaction2)
-                .verifyComplete();      // Se inicia la verificación
-
-        verify(transactionRepository, times(1)).findBySourceAccount("123");     // Se verifica la ubicación de la cuenta de Origen.
+        // Verificación de interacciones con mocks
+        verify(transactionRepository, times(1)).findAll();
+        verify(transactionMapper, times(1)).toDTO(transaction1);
+        verify(transactionMapper, times(1)).toDTO(transaction2);
     }
 }

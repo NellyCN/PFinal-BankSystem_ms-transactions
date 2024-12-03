@@ -89,9 +89,5 @@ public class TransactionServiceImpl implements TransactionService {
         return transactionRepository.findAll().map(transactionMapper::toDTO);
     }
 
-    @Override
-    public Flux<TransactionDTO> getAllTransactionsAccount(String accountId) {
-        return transactionRepository.findBySourceAccount(accountId).map(transactionMapper::toDTO);
-    }
 
 }

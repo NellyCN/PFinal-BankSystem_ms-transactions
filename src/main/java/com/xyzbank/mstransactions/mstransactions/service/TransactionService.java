@@ -10,6 +10,6 @@ public interface TransactionService {
     Mono<TransactionDTO> withdrawal(TransactionDTO transactionDTO); // Realizar retiro.
     Mono<TransactionDTO> transfer(TransactionDTO transactionDTO); // Realizar transferencia.
     Flux<TransactionDTO> getAllTransactions();
-    Flux<TransactionDTO> getAllTransactionsAccount(String accountId);  // Consultar historial de transacciones.
+//    Flux<TransactionDTO> getAllTransactionsAccount(String accountId);  // Consultar historial de transacciones.
 
 }

@@ -17,4 +17,6 @@ public class TransactionDTO {
     private Double amount;
     private LocalDateTime date;
     private String status;
+    private String sourceAccount;
+    private String destinationAccount;
 }

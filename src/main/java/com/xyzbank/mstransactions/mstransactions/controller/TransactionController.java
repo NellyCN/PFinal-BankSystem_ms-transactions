@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.GetMapping;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -45,8 +44,5 @@ public class TransactionController {
     public Flux<TransactionDTO> getAllTransactions() {
         return transactionService.getAllTransactions();
     }
-    @GetMapping("/history/{accountId}")
-    public Flux<TransactionDTO> getAllTransactionsAccount(@PathVariable String accountId) {
-        return transactionService.getAllTransactionsAccount(accountId);
-    }
+
 }

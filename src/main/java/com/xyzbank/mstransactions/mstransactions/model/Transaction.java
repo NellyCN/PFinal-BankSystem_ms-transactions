@@ -27,4 +27,14 @@ public class Transaction {
     private String sourceAccount;
     private String destinationAccount;
 
+    // Constructor
+    public Transaction(String id, String type, Double amount, LocalDateTime date, String status, String sourceAccount, String destinationAccount) {
+        this.id = id;
+        this.type = type;
+        this.amount = amount;
+        this.date = date;
+        this.status = status;
+        this.sourceAccount = sourceAccount;
+        this.destinationAccount = destinationAccount;
+    }
 }
