@@ -26,5 +26,7 @@
 
 ### 3. Reportes de Coverage
 
+![JacocoCoverageAl38%.png](src%2Fimgs%2FJacocoCoverageAl38%25.png)
+![CoverageGetAllTransactions.png](src%2Fimgs%2FCoverageGetAllTransactions.png)
 ![ReporteCoverage.png](src%2Fimgs%2FReporteCoverage.png)
 ![ReporteCoverage_Jacoco.png](src%2Fimgs%2FReporteCoverage_Jacoco.png)
