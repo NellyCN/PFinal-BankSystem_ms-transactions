@@ -30,7 +30,7 @@
         <module name="UnusedImports"/>
         <module name="AvoidStarImport"/>
 
-        <!-- Regla para comentarios TODO -->
+        <!-- Regla para comentariosTODO  -->
         <module name="TodoComment">
             <property name="severity" value="warning"/>
         </module>
